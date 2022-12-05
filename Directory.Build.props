@@ -1,0 +1,22 @@
+<Project>
+
+  <PropertyGroup>
+    <Authors>ErikEJ</Authors>
+    <PackageProjectUrl>https://github.com/ErikEJ/EFCore.SqlServer.DateOnlyTimeOnly</PackageProjectUrl>
+    <PackageTags>EFCore;SQL Server;DateOnly;TimeOnly</PackageTags>
+    <Copyright>© 2023 ErikEJ. All rights reserved.</Copyright>
+    <Version>6.0.0-preview.1</Version>
+    <Features>strict</Features>
+    <LangVersion>latest</LangVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+	  <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

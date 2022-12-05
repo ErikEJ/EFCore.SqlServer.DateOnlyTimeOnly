@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>EntityFrameworkCore.SqlServer.DateOnlyTimeOnly</AssemblyName>
+	<RootNamespace>Microsoft.EntityFrameworkCore.SqlServer</RootNamespace>
+	<Description>Adds DateOnly and TimeOnly support to the SQL Server EF Core provider</Description>
+	<PackageReadmeFile>readme.md</PackageReadmeFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+   <ItemGroup>
+	 <None Include="build\**\*">
+		<Pack>True</Pack>
+		<PackagePath>build</PackagePath>
+	 </None>
+   </ItemGroup>	
+
+  <ItemGroup>
+	<None Include="..\readme.md" Link="readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
+  </ItemGroup>	
+
+</Project>
