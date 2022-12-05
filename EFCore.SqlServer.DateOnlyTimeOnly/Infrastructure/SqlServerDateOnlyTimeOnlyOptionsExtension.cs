@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.SqlServer.Properties;
 using Microsoft.EntityFrameworkCore.SqlServer.Storage;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,10 +28,11 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Infrastructure
                 using (var scope = internalServiceProvider.CreateScope())
                 {
                     if (scope.ServiceProvider.GetService<IEnumerable<IRelationalTypeMappingSourcePlugin>>()
-                           ?.Any(s => s is SqlServerDateOnlyTypeMappingSourcePlugin) != true)
+                           ?.Any(s => s is SqlServerDateOnlyTypeMappingSourcePlugin) != true ||
+                        scope.ServiceProvider.GetService<IEnumerable<IRelationalTypeMappingSourcePlugin>>()
+                           ?.Any(s => s is SqlServerTimeOnlyTypeMappingSourcePlugin) != true)
                     {
-                        //TODO add message
-                        throw new InvalidOperationException("message");
+                        throw new InvalidOperationException(Resources.ServicesMissing);
                     }
                 }
             }

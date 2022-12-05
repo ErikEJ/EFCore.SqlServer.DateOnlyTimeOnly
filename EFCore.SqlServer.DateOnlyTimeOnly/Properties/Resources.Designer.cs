@@ -59,5 +59,14 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UseDateOnlyTimeOnly requires AddEntityFrameworkSqlServerDateOnlyTimeOnly to be called on the internal service provider used..
+        /// </summary>
+        internal static string ServicesMissing {
+            get {
+                return ResourceManager.GetString("ServicesMissing", resourceCulture);
+            }
+        }
     }
 }

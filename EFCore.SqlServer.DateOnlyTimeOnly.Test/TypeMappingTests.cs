@@ -27,8 +27,8 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
         {
             var mapping = CreateMapper().FindMapping(
                 new RelationalTypeMappingInfo(
-                    storeTypeName: "date", // TODO SqlServerHierarchyIdTypeMappingSourcePlugin.SqlServerTypeName,
-                    storeTypeNameBase: "date", // TODO SqlServerHierarchyIdTypeMappingSourcePlugin.SqlServerTypeName,
+                    storeTypeName: SqlServerDateOnlyTypeMappingSourcePlugin.SqlServerTypeName,
+                    storeTypeNameBase: SqlServerDateOnlyTypeMappingSourcePlugin.SqlServerTypeName,
                     unicode: null,
                     size: null,
                     precision: null,

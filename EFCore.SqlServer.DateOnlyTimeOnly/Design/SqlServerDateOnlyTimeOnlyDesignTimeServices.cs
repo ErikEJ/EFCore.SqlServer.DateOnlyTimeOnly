@@ -22,6 +22,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Design
         {
             serviceCollection
                 .AddSingleton<IRelationalTypeMappingSourcePlugin, SqlServerDateOnlyTypeMappingSourcePlugin>()
+                .AddSingleton<IRelationalTypeMappingSourcePlugin, SqlServerTimeOnlyTypeMappingSourcePlugin>()
                 .AddSingleton<IProviderCodeGeneratorPlugin, SqlServerDateOnlyTimeOnlyCodeGeneratorPlugin>();
         }
     }
