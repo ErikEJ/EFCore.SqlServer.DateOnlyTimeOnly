@@ -17,7 +17,6 @@
 	
   <ItemGroup>
     <Compile Remove="MigrationTests.cs" />
-    <Compile Remove="QueryTests.cs" />
   </ItemGroup>
 
   <ItemGroup>

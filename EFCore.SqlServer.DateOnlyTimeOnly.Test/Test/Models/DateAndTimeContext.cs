@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.SqlServer.Test.Logging;
+using System;
 
 namespace Microsoft.EntityFrameworkCore.SqlServer.Test.Models
 {
@@ -21,24 +22,11 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Test.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Patriarch>()
-            //    .HasData(
-            //        new Patriarch { Id = HierarchyId.GetRoot(), Name = "Abraham" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/"), Name = "Isaac" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/"), Name = "Jacob" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/1/"), Name = "Reuben" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/2/"), Name = "Simeon" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/3/"), Name = "Levi" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/4/"), Name = "Judah" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/5/"), Name = "Issachar" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/6/"), Name = "Zebulun" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/7/"), Name = "Dan" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/8/"), Name = "Naphtali" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/9/"), Name = "Gad" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/10/"), Name = "Asher" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/11.1/"), Name = "Ephraim" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/11.2/"), Name = "Manasseh" },
-            //        new Patriarch { Id = HierarchyId.Parse("/1/1/12/"), Name = "Benjamin" });
+            modelBuilder.Entity<EventSchedule>()
+                .HasData(
+                    new EventSchedule { Id = 1, StartDate = new DateOnly(2022, 12, 13) },
+                    new EventSchedule { Id = 2, StartDate = new DateOnly(2022, 12, 24) },
+                    new EventSchedule { Id = 3, StartDate = new DateOnly(1758, 12, 24) });
         }
     }
 }
