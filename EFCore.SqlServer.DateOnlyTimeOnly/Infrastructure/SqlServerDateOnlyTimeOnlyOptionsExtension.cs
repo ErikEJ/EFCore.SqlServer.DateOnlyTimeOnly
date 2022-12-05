@@ -27,7 +27,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Infrastructure
                 using (var scope = internalServiceProvider.CreateScope())
                 {
                     if (scope.ServiceProvider.GetService<IEnumerable<IRelationalTypeMappingSourcePlugin>>()
-                           ?.Any(s => s is SqlServerDateOnlyMappingSourcePlugin) != true)
+                           ?.Any(s => s is SqlServerDateOnlyTypeMappingSourcePlugin) != true)
                     {
                         //TODO add message
                         throw new InvalidOperationException("message");

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
 {
-    internal class SqlServerDateOnlyMappingSourcePlugin : IRelationalTypeMappingSourcePlugin
+    internal class SqlServerDateOnlyTypeMappingSourcePlugin : IRelationalTypeMappingSourcePlugin
     {
         public const string SqlServerTypeName = "date";
 

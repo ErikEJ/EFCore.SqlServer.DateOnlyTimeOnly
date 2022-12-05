@@ -21,7 +21,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Design
         public virtual void ConfigureDesignTimeServices(IServiceCollection serviceCollection)
         {
             serviceCollection
-                .AddSingleton<IRelationalTypeMappingSourcePlugin, SqlServerDateOnlyMappingSourcePlugin>()
+                .AddSingleton<IRelationalTypeMappingSourcePlugin, SqlServerDateOnlyTypeMappingSourcePlugin>()
                 .AddSingleton<IProviderCodeGeneratorPlugin, SqlServerDateOnlyTimeOnlyCodeGeneratorPlugin>();
         }
     }

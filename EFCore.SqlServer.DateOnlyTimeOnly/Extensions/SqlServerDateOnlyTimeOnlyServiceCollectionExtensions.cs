@@ -18,7 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection serviceCollection)
         {
             new EntityFrameworkRelationalServicesBuilder(serviceCollection)
-                .TryAdd<IRelationalTypeMappingSourcePlugin, SqlServerDateOnlyMappingSourcePlugin>();
+                .TryAdd<IRelationalTypeMappingSourcePlugin, SqlServerDateOnlyTypeMappingSourcePlugin>();
 
             return serviceCollection;
         }

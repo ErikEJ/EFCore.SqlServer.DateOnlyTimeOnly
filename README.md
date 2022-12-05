@@ -8,7 +8,7 @@ Adds DateOnly and TimeOnly support to the SQL Server EF Core provider.
 Installation
 ------------
 
-The latest stable version is available on [NuGet](https://www.nuget.org/packages/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly).
+The latest version is available on [NuGet](https://www.nuget.org/packages/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly).
 
 ```sh
 dotnet add package ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly
@@ -37,10 +37,9 @@ options.UseSqlServer(
 Add `DateOnly` and `TimeOnly` properties to your entity types.
 
 ```cs
-class Events
+class EventSchedule
 {
     public int Id { get; set; }
-    public string Name { get; set; }
     public DateOnly StartDate { get; set; }
     public TimeOnly TimeOfDay { get; set; }
 }
@@ -52,20 +51,17 @@ TODO update sample
 
 ```cs
 dbContext.AddRange(
-    new Patriarch { Id = HierarchyId.GetRoot(), Name = "Abraham" },
-    new Patriarch { Id = HierarchyId.Parse("/1/"), Name = "Isaac" },
-    new Patriarch { Id = HierarchyId.Parse("/1/1/"), Name = "Jacob" });
+    new EventSchedule { StartDate =  };
 dbContext.SaveChanges();
 ```
 
 Query.
 
 ```cs
-var thirdGeneration = from p in dbContext.Patriarchs
-                      where p.Id.GetLevel() == 2
-                      select p;
+var eventsOfTheDay = from e in dbContext.EventSchedules
+                      where e.StartDate == new DateOnly(2022, 10, 12)
+                      select e;
 ```
-
 
 See also
 --------
