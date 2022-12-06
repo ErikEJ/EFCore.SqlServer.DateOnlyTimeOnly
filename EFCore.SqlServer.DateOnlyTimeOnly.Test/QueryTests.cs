@@ -48,6 +48,38 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
             Assert.Equal(new[] { 1 }, results);
         }
 
+        [Fact]
+        public void GetTimeOnly_can_translate()
+        {
+            var results = Enumerable.ToList(
+                from p in _db.Events
+                where p.StartTime == new TimeOnly(9, 9)
+                select p.Id);
+
+            Assert.Equal(
+                condense(@"SELECT [e].[Id] FROM [Events] AS [e] WHERE [e].[StartTime] = '09:09:00'"),
+                condense(_db.Sql));
+
+            Assert.Equal(new[] { 1 }, results);
+        }
+
+        [Fact]
+        public void GetTimeOnly_can_translate_Parameter()
+        {
+            var startTime = new TimeOnly(9, 9);
+
+            var results = Enumerable.ToList(
+                from p in _db.Events
+                where p.StartTime == startTime
+                select p.Id);
+
+            Assert.Equal(
+                condense(@"SELECT [e].[Id] FROM [Events] AS [e] WHERE [e].[StartTime] = @__startTime_0"),
+                condense(_db.Sql));
+
+            Assert.Equal(new[] { 1 }, results);
+        }
+
         public void Dispose()
         {
             _db.Dispose();

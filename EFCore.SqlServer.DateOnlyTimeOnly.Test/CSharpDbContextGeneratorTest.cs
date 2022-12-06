@@ -18,6 +18,7 @@ public class CSharpDbContextGeneratorTest : ModelCodeGeneratorTestBase
                     b =>
                     {
                         b.Property<DateOnly>("StartDate");
+                        b.Property<TimeOnly>("StartTime");
                         b.Property<int>("Id");
                         b.HasKey("Id");
                     });

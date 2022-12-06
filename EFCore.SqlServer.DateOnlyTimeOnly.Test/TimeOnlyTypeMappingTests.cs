@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Microsoft.EntityFrameworkCore.SqlServer
 {
-    public class TypeMappingTests
+    public class TimeOnlyTypeMappingTests
     {
         [Fact]
         public void Maps_int_column()
@@ -23,18 +23,34 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
         }
 
         [Fact]
-        public void Maps_dateonly_column()
+        public void Maps_timeonly_column()
         {
             var mapping = CreateMapper().FindMapping(
                 new RelationalTypeMappingInfo(
-                    storeTypeName: SqlServerDateOnlyTypeMappingSourcePlugin.SqlServerTypeName,
-                    storeTypeNameBase: SqlServerDateOnlyTypeMappingSourcePlugin.SqlServerTypeName,
+                    storeTypeName: SqlServerTimeOnlyTypeMappingSourcePlugin.SqlServerTypeName,
+                    storeTypeNameBase: SqlServerTimeOnlyTypeMappingSourcePlugin.SqlServerTypeName,
                     unicode: null,
                     size: null,
                     precision: null,
                     scale: null));
 
-            AssertMapping<DateOnly>(mapping);
+            AssertMapping<TimeOnly>(mapping);
+        }
+
+        //TODO Fix precision
+        [Fact]
+        public void Maps_timeonly_column_with_precision()
+        {
+            var mapping = CreateMapper().FindMapping(
+                new RelationalTypeMappingInfo(
+                    storeTypeName: SqlServerTimeOnlyTypeMappingSourcePlugin.SqlServerTypeName + "(3)",
+                    storeTypeNameBase: SqlServerTimeOnlyTypeMappingSourcePlugin.SqlServerTypeName,
+                    unicode: null,
+                    size: null,
+                    precision: null,
+                    scale: null));
+
+            AssertMapping<TimeOnly>(mapping);
         }
 
         private static void AssertMapping<T>(
@@ -51,6 +67,6 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
         }
 
         private static IRelationalTypeMappingSourcePlugin CreateMapper()
-            => new SqlServerDateOnlyTypeMappingSourcePlugin();
+            => new SqlServerTimeOnlyTypeMappingSourcePlugin();
     }
 }

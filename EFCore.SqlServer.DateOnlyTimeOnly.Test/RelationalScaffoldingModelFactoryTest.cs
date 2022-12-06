@@ -86,6 +86,12 @@ public class RelationalScaffoldingModelFactoryTest
                             Table = Table,
                             Name = "dateonly",
                             StoreType = "date"
+                        },
+                        new DatabaseColumn
+                        {
+                            Table = Table,
+                            Name = "timeonly",
+                            StoreType = "time"
                         }
                     },
                     PrimaryKey = IdPrimaryKey
@@ -117,6 +123,11 @@ public class RelationalScaffoldingModelFactoryTest
             {
                 Assert.Equal("salary", column.GetColumnBaseName());
                 Assert.Equal(typeof(int?), column.ClrType);
+            },
+            column =>
+            {
+                Assert.Equal("timeonly", column.GetColumnBaseName());
+                Assert.Equal(typeof(TimeOnly), column.ClrType);
             });
     }
 }

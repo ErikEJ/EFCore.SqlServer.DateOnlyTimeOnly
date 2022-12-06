@@ -21,17 +21,18 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
             @"'{0:hh\:mm\:ss\.FFFFFFF}'"
         };
 
-        //TODO Test scale
         public SqlServerTimeOnlyTypeMapping(
             string storeType,
             DbType? dbType = System.Data.DbType.Time,
-            StoreTypePostfix storeTypePostfix = StoreTypePostfix.Precision)
+            StoreTypePostfix storeTypePostfix = StoreTypePostfix.Precision,
+            int? precision = null)
             : base(
                 new RelationalTypeMappingParameters(
                     new CoreTypeMappingParameters(typeof(TimeOnly)),
                     storeType,
                     storeTypePostfix,
-                    dbType))
+                    dbType,
+                    precision: precision))
         {
         }
 
@@ -51,6 +52,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
 
             if (Precision.HasValue)
             {
+                // Workaround for inconsistent use of precision/scale between EF and SqlClient for VarTime types
                 parameter.Scale = unchecked((byte)Precision.Value);
             }
         }

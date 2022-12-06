@@ -43,6 +43,41 @@ namespace TestNamespace
             });
 
     [ConditionalFact]
+    public void Class_with_TimeOnly_key_is_generated()
+        => Test(
+            modelBuilder =>
+            {
+                modelBuilder.Entity(
+                   "EventPlan",
+                   b =>
+                   {
+                       b.Property<TimeOnly>("StartTime");
+                       b.HasKey("StartTime");
+                   });
+            },
+            new ModelCodeGenerationOptions { UseDataAnnotations = true },
+            code =>
+            {
+                AssertFileContents(
+                    @"using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace TestNamespace
+{
+    public partial class EventPlan
+    {
+        [Key]
+        public TimeOnly StartTime { get; set; }
+    }
+}
+",
+                    code.AdditionalFiles.Single(f => f.Path == "EventPlan.cs"));
+            });
+
+    [ConditionalFact]
     public void Class_with_DateOnly_property_is_generated()
         => Test(
             modelBuilder =>
@@ -82,7 +117,46 @@ namespace TestNamespace
             });
 
     [ConditionalFact]
-    public void Class_with_multiple_DateOnly_properties_are_generated()
+    public void Class_with_TimeOnly_property_is_generated()
+        => Test(
+            modelBuilder =>
+            {
+                modelBuilder.Entity(
+                    "EventPlan",
+                    b =>
+                    {
+                        b.Property<int>("Id");
+                        b.HasKey("Id");
+                        b.Property<string>("Name");
+                        b.Property<TimeOnly>("TimeOnly");
+                    });
+            },
+            new ModelCodeGenerationOptions { UseDataAnnotations = true },
+            code =>
+            {
+                AssertFileContents(
+                    @"using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace TestNamespace
+{
+    public partial class EventPlan
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public TimeOnly TimeOnly { get; set; }
+    }
+}
+",
+                    code.AdditionalFiles.Single(f => f.Path == "EventPlan.cs"));
+            });
+
+    [ConditionalFact]
+    public void Class_with_multiple_DateOnly_TimeOnly_properties_are_generated()
         => Test(
             modelBuilder =>
             {
@@ -94,6 +168,7 @@ namespace TestNamespace
                         b.HasKey("Id");
                         b.Property<string>("Name");
                         b.Property<DateOnly>("DateOnly");
+                        b.Property<TimeOnly>("TimeOnly");
                     });
             },
             new ModelCodeGenerationOptions { UseDataAnnotations = true },
@@ -114,6 +189,7 @@ namespace TestNamespace
         public DateOnly Id { get; set; }
         public DateOnly DateOnly { get; set; }
         public string Name { get; set; }
+        public TimeOnly TimeOnly { get; set; }
     }
 }
 ",

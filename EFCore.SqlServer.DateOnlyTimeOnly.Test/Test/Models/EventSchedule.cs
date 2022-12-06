@@ -6,5 +6,6 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Test.Models
     {
         public int Id { get; set; }
         public DateOnly StartDate { get; set; }
+        public TimeOnly StartTime { get; set; }
     }
 }
