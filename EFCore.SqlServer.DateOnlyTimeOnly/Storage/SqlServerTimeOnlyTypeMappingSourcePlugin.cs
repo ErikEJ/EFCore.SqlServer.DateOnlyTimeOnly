@@ -23,10 +23,13 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
         {
             int? precision = null;
 
-            var openParen = storeTypeName.IndexOf("(", StringComparison.Ordinal);
-            if (openParen >= 0)
+            if (!string.IsNullOrEmpty(storeTypeName))
             {
-                precision = int.Parse(storeTypeName.Substring(openParen + 1, 1), CultureInfo.InvariantCulture);
+                var openParen = storeTypeName.IndexOf("(", StringComparison.Ordinal);
+                if (openParen >= 0)
+                {
+                    precision = int.Parse(storeTypeName.Substring(openParen + 1, 1), CultureInfo.InvariantCulture);
+                }
             }
 
             return precision;

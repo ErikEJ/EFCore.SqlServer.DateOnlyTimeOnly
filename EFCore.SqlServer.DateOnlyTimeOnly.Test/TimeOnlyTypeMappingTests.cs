@@ -37,7 +37,6 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
             AssertMapping<TimeOnly>(mapping);
         }
 
-        //TODO Fix precision
         [Fact]
         public void Maps_timeonly_column_with_precision()
         {
