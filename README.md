@@ -3,7 +3,7 @@ ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly
 
 TODO - add status labels
 
-Adds DateOnly and TimeOnly support to the SQL Server EF Core provider.
+Adds .NET 6 or later `DateOnly` and `TimeOnly` support to the SQL Server EF Core provider. These types map directly to the SQL Server `date` and `time` data types.
 
 Installation
 ------------
@@ -66,5 +66,6 @@ var eventsOfTheDay = from e in dbContext.EventSchedules
 See also
 --------
 
-* [Date and Time Data Types (SQL Server)](https://learn.microsoft.com/sql/t-sql/functions/date-and-time-data-types-and-functions-transact-sq)
-* [Entity Framework documentation](https://docs.microsoft.com/ef/)
+* [Date Data Type (SQL Server)](https://learn.microsoft.com/sql/t-sql/data-types/date-transact-sql)
+* [Time Data Type (SQL Server)](https://learn.microsoft.com/sql/t-sql/data-types/time-transact-sql)
+* [Entity Framework documentation](https://learn.microsoft.com/ef/)

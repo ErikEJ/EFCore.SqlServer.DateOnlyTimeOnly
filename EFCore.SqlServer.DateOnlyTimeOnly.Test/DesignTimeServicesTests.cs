@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.SqlServer.Storage;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using Xunit;
 
 namespace Microsoft.EntityFrameworkCore.SqlServer
@@ -17,7 +18,8 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
             new SqlServerDateOnlyTimeOnlyDesignTimeServices().ConfigureDesignTimeServices(serviceCollection);
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            Assert.IsType<SqlServerDateOnlyTypeMappingSourcePlugin>(serviceProvider.GetService<IRelationalTypeMappingSourcePlugin>());
+            Assert.IsType<SqlServerTimeOnlyTypeMappingSourcePlugin>(serviceProvider.GetServices<IRelationalTypeMappingSourcePlugin>().Last());
+            Assert.IsType<SqlServerDateOnlyTypeMappingSourcePlugin>(serviceProvider.GetServices<IRelationalTypeMappingSourcePlugin>().First());
             Assert.IsType<SqlServerDateOnlyTimeOnlyCodeGeneratorPlugin>(serviceProvider.GetService<IProviderCodeGeneratorPlugin>());
         }
     }

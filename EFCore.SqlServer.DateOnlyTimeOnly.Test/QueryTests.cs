@@ -31,6 +31,23 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
             Assert.Equal(new[] { 1 }, results);
         }
 
+        [Fact]
+        public void GetDateOnly_can_translate_Parameter()
+        {
+            var startDate = new DateOnly(2022, 12, 13);
+
+            var results = Enumerable.ToList(
+                from p in _db.Events
+                where p.StartDate == startDate
+                select p.Id);
+
+            Assert.Equal(
+                condense(@"SELECT [e].[Id] FROM [Events] AS [e] WHERE [e].[StartDate] = @__startDate_0"),
+                condense(_db.Sql));
+
+            Assert.Equal(new[] { 1 }, results);
+        }
+
         public void Dispose()
         {
             _db.Dispose();
