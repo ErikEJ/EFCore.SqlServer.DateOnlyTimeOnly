@@ -12,6 +12,10 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
+	
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+	  <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>	
 
 	<ItemGroup>
 		<Compile Include="..\EFCore.SqlServer.DateOnlyTimeOnly\**\*.cs" />

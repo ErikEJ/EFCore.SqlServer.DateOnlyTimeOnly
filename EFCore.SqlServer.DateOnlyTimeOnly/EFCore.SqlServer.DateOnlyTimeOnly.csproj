@@ -13,7 +13,11 @@
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
 
-   <ItemGroup>
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
 	 <None Include="build\**\*">
 		<Pack>True</Pack>
 		<PackagePath>build</PackagePath>
