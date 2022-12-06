@@ -8,18 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Test\Models\Migrations\**" />
-    <EmbeddedResource Remove="Test\Models\Migrations\**" />
-    <None Remove="Test\Models\Migrations\**" />
-  </ItemGroup>
-
-  
-	
-  <ItemGroup>
-    <Compile Remove="MigrationTests.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational.Specification.Tests" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1" />

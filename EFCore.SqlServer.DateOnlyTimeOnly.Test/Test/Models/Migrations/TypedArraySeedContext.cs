@@ -1,101 +1,66 @@
 ﻿using Microsoft.EntityFrameworkCore.SqlServer.Storage;
+using System;
 
 namespace Microsoft.EntityFrameworkCore.SqlServer.Test.Models.Migrations
 {
-    internal sealed class TypedArraySeedContext : MigrationContext<Patriarch, ConvertedPatriarch>
+    internal sealed class TypedArraySeedContext : MigrationContext<EventSchedule>
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             RemoveVariableModelAnnotations(modelBuilder);
 
-            modelBuilder.Entity<Patriarch>().HasData(
-                new Patriarch { Id = HierarchyId.GetRoot(), Name = "Eddard Stark" },
-                new Patriarch { Id = HierarchyId.Parse("/1/"), Name = "Robb Stark" },
-                new Patriarch { Id = HierarchyId.Parse("/2/"), Name = "Jon Snow" });
-
-            modelBuilder.Entity<ConvertedPatriarch>(b =>
-            {
-                b.Property(e => e.HierarchyId)
-                    .HasConversion(v => HierarchyId.Parse(v), v => v.ToString());
-
-                b.HasData(
-                    new ConvertedPatriarch { Id = 1, HierarchyId = HierarchyId.GetRoot().ToString(), Name = "Eddard Stark" },
-                    new ConvertedPatriarch { Id = 2, HierarchyId = HierarchyId.Parse("/1/").ToString(), Name = "Robb Stark" },
-                    new ConvertedPatriarch { Id = 3, HierarchyId = HierarchyId.Parse("/2/").ToString(), Name = "Jon Snow" });
-            });
+            modelBuilder.Entity<EventSchedule>().HasData(
+                    new EventSchedule { Id = 1, StartDate = new DateOnly(2022, 12, 13), StartTime = new TimeOnly(9, 9) },
+                    new EventSchedule { Id = 2, StartDate = new DateOnly(2022, 12, 24), StartTime = new TimeOnly(10, 10) },
+                    new EventSchedule { Id = 3, StartDate = new DateOnly(1758, 12, 24), StartTime = new TimeOnly(11, 11) });
         }
 
         public override string GetExpectedMigrationCode(string migrationName, string rootNamespace)
         {
-            return $@"using Microsoft.EntityFrameworkCore;
+            return $@"using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
-namespace {rootNamespace}.Migrations
+namespace MyApp.Data.Migrations
 {{
-    /// <inheritdoc />
-    public partial class {migrationName} : Migration
+    public partial class MyMigration : Migration
     {{
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {{
             migrationBuilder.CreateTable(
-                name: ""{nameof(ConvertedTestModels)}"",
+                name: ""TestModels"",
                 columns: table => new
                 {{
-                    {nameof(ConvertedPatriarch.Id)} = table.Column<int>(type: ""int"", nullable: false),
-                    {nameof(ConvertedPatriarch.HierarchyId)} = table.Column<{nameof(HierarchyId)}>(type: ""hierarchyid"", nullable: true),
-                    {nameof(ConvertedPatriarch.Name)} = table.Column<string>(type: ""nvarchar(max)"", nullable: true)
+                    Id = table.Column<int>(type: ""int"", nullable: false),
+                    StartDate = table.Column<{typeof(DateOnly).Name}>(type: ""date"", nullable: false),
+                    StartTime = table.Column<{typeof(TimeOnly).Name}>(type: ""time"", nullable: false)
                 }},
                 constraints: table =>
                 {{
-                    table.PrimaryKey(""PK_{nameof(ConvertedTestModels)}"", x => x.{nameof(ConvertedPatriarch.Id)});
-                }});
-
-            migrationBuilder.CreateTable(
-                name: ""{nameof(TestModels)}"",
-                columns: table => new
-                {{
-                    {nameof(Patriarch.Id)} = table.Column<{nameof(HierarchyId)}>(type: ""hierarchyid"", nullable: false),
-                    {nameof(Patriarch.Name)} = table.Column<string>(type: ""nvarchar(max)"", nullable: true)
-                }},
-                constraints: table =>
-                {{
-                    table.PrimaryKey(""PK_{nameof(TestModels)}"", x => x.{nameof(Patriarch.Id)});
-                }});
-
-            migrationBuilder.InsertData(
-                table: ""ConvertedTestModels"",
-                columns: new[] {{ ""Id"", ""HierarchyId"", ""Name"" }},
-                values: new object[,]
-                {{
-                    {{ 1, {typeof(HierarchyId).FullName}.Parse(""/""), ""Eddard Stark"" }},
-                    {{ 2, {typeof(HierarchyId).FullName}.Parse(""/1/""), ""Robb Stark"" }},
-                    {{ 3, {typeof(HierarchyId).FullName}.Parse(""/2/""), ""Jon Snow"" }}
+                    table.PrimaryKey(""PK_TestModels"", x => x.Id);
                 }});
 
             migrationBuilder.InsertData(
                 table: ""TestModels"",
-                columns: new[] {{ ""Id"", ""Name"" }},
-                values: new object[,]
-                {{
-                    {{ {typeof(HierarchyId).FullName}.Parse(""/""), ""Eddard Stark"" }},
-                    {{ {typeof(HierarchyId).FullName}.Parse(""/1/""), ""Robb Stark"" }},
-                    {{ {typeof(HierarchyId).FullName}.Parse(""/2/""), ""Jon Snow"" }}
-                }});
+                columns: new[] {{ ""Id"", ""StartDate"", ""StartTime"" }},
+                values: new object[] {{ 1, new DateOnly(2022, 12, 13), new TimeOnly(9, 9, 0) }});
+
+            migrationBuilder.InsertData(
+                table: ""TestModels"",
+                columns: new[] {{ ""Id"", ""StartDate"", ""StartTime"" }},
+                values: new object[] {{ 2, new DateOnly(2022, 12, 24), new TimeOnly(10, 10, 0) }});
+
+            migrationBuilder.InsertData(
+                table: ""TestModels"",
+                columns: new[] {{ ""Id"", ""StartDate"", ""StartTime"" }},
+                values: new object[] {{ 3, new DateOnly(1758, 12, 24), new TimeOnly(11, 11, 0) }});
         }}
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {{
             migrationBuilder.DropTable(
-                name: ""ConvertedTestModels"");
-
-            migrationBuilder.DropTable(
-                name: ""{nameof(TestModels)}"");
+                name: ""TestModels"");
         }}
     }}
 }}
@@ -105,86 +70,57 @@ namespace {rootNamespace}.Migrations
         public override string GetExpectedSnapshotCode(string rootNamespace)
         {
             return $@"// <auto-generated />
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using {ThisType.Namespace};
+using Microsoft.EntityFrameworkCore.SqlServer.Test.Models.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace {rootNamespace}.Migrations
+namespace MyApp.Data.Migrations
 {{
-    [DbContext(typeof({ThisType.Name}))]
-    partial class {ThisType.Name}ModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TypedArraySeedContext))]
+    partial class TypedArraySeedContextModelSnapshot : ModelSnapshot
     {{
         protected override void BuildModel(ModelBuilder modelBuilder)
         {{
 #pragma warning disable 612, 618
 
-            modelBuilder.Entity(""{ModelType2.FullName}"", b =>
+            modelBuilder.Entity(""Microsoft.EntityFrameworkCore.SqlServer.Test.Models.EventSchedule"", b =>
                 {{
                     b.Property<int>(""Id"")
                         .ValueGeneratedOnAdd()
                         .HasColumnType(""int"");
 
-                    b.Property<HierarchyId>(""HierarchyId"")
-                        .HasColumnType(""hierarchyid"");
+                    b.Property<DateOnly>(""StartDate"")
+                        .HasColumnType(""date"");
 
-                    b.Property<string>(""Name"")
-                        .HasColumnType(""nvarchar(max)"");
+                    b.Property<TimeOnly>(""StartTime"")
+                        .HasColumnType(""time"");
 
                     b.HasKey(""Id"");
 
-                    b.ToTable(""ConvertedTestModels"");
+                    b.ToTable(""TestModels"");
 
                     b.HasData(
                         new
                         {{
                             Id = 1,
-                            HierarchyId = Microsoft.EntityFrameworkCore.HierarchyId.Parse(""/""),
-                            Name = ""Eddard Stark""
+                            StartDate = new DateOnly(2022, 12, 13),
+                            StartTime = new TimeOnly(9, 9, 0)
                         }},
                         new
                         {{
                             Id = 2,
-                            HierarchyId = Microsoft.EntityFrameworkCore.HierarchyId.Parse(""/1/""),
-                            Name = ""Robb Stark""
+                            StartDate = new DateOnly(2022, 12, 24),
+                            StartTime = new TimeOnly(10, 10, 0)
                         }},
                         new
                         {{
                             Id = 3,
-                            HierarchyId = Microsoft.EntityFrameworkCore.HierarchyId.Parse(""/2/""),
-                            Name = ""Jon Snow""
-                        }});
-                }});
-
-            modelBuilder.Entity(""{ModelType1.FullName}"", b =>
-                {{
-                    b.Property<{nameof(HierarchyId)}>(""{nameof(Patriarch.Id)}"")
-                        .HasColumnType(""{SqlServerHierarchyIdTypeMappingSourcePlugin.SqlServerTypeName}"");
-
-                    b.Property<string>(""{nameof(Patriarch.Name)}"")
-                        .HasColumnType(""nvarchar(max)"");
-
-                    b.HasKey(""{nameof(Patriarch.Id)}"");
-
-                    b.ToTable(""{nameof(TestModels)}"");
-
-                    b.HasData(
-                        new
-                        {{
-                            {nameof(Patriarch.Id)} = Microsoft.EntityFrameworkCore.HierarchyId.Parse(""/""),
-                            {nameof(Patriarch.Name)} = ""Eddard Stark""
-                        }},
-                        new
-                        {{
-                            {nameof(Patriarch.Id)} = Microsoft.EntityFrameworkCore.HierarchyId.Parse(""/1/""),
-                            {nameof(Patriarch.Name)} = ""Robb Stark""
-                        }},
-                        new
-                        {{
-                            {nameof(Patriarch.Id)} = Microsoft.EntityFrameworkCore.HierarchyId.Parse(""/2/""),
-                            {nameof(Patriarch.Name)} = ""Jon Snow""
+                            StartDate = new DateOnly(1758, 12, 24),
+                            StartTime = new TimeOnly(11, 11, 0)
                         }});
                 }});
 #pragma warning restore 612, 618
