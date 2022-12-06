@@ -11,15 +11,25 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SignAssembly>True</SignAssembly>
-	<OutputPath>bin7</OutputPath>  
   </PropertyGroup>
 
-   <ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\EFCore.SqlServer.DateOnlyTimeOnly\**\*.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 	 <None Include="build\**\*">
 		<Pack>True</Pack>
 		<PackagePath>build</PackagePath>
 	 </None>
-   </ItemGroup>	
+   </ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="..\EFCore.SqlServer.DateOnlyTimeOnly\obj\Debug\net6.0\**" />
+	  <Compile Remove="obj\**" />
+	  <EmbeddedResource Remove="obj\**" />
+	  <None Remove="obj\**" />
+	</ItemGroup>
 
   <ItemGroup>
 	<None Include="..\readme.md" Link="readme.md" Pack="true" PackagePath="\" />
@@ -28,21 +38,6 @@
   <ItemGroup>
 	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0-preview2.22314.2" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>	
 
 </Project>
