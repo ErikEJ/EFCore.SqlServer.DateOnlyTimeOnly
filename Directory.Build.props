@@ -7,7 +7,6 @@
     <Copyright>© 2023 ErikEJ. All rights reserved.</Copyright>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)keyfile.snk</AssemblyOriginatorKeyFile>
-    <Version>6.0.0-preview.1</Version>
     <Features>strict</Features>
     <LangVersion>latest</LangVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

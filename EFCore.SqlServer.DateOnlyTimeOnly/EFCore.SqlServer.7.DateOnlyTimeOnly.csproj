@@ -4,13 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>EntityFrameworkCore.SqlServer.DateOnlyTimeOnly</AssemblyName>
 	<RootNamespace>Microsoft.EntityFrameworkCore.SqlServer</RootNamespace>
-	<Description>Adds DateOnly and TimeOnly support to the SQL Server EF Core 6 provider</Description>
+	<Description>Adds DateOnly and TimeOnly support to the SQL Server EF Core 7 provider</Description>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-	<Version>6.0.0-preview.1</Version>
+	<Version>7.0.0-preview.1</Version>
 	<PackageId>EntityFrameworkCore.SqlServer.DateOnlyTimeOnly</PackageId>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SignAssembly>True</SignAssembly>
+	<OutputPath>bin7</OutputPath>  
   </PropertyGroup>
 
    <ItemGroup>
@@ -26,7 +27,7 @@
 
   <ItemGroup>
 	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0-preview2.22314.2" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
