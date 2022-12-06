@@ -25,3 +25,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        path: |
+          **\\*.nupkg
