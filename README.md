@@ -49,8 +49,7 @@ class EventSchedule
 Insert data.
 
 ```cs
-dbContext.AddRange(
-    new EventSchedule { StartDate = new DateOnly(2022, 12, 24), TimeOfDay = new TimeOnly(12, 00) };
+dbContext.Add(new EventSchedule { StartDate = new DateOnly(2022, 12, 24), TimeOfDay = new TimeOnly(12, 00) });
 dbContext.SaveChanges();
 ```
 
@@ -58,8 +57,8 @@ Query.
 
 ```cs
 var eventsOfTheDay = from e in dbContext.EventSchedules
-                      where e.StartDate == new DateOnly(2022, 10, 12)
-                      select e;
+                     where e.StartDate == new DateOnly(2022, 10, 12)
+                     select e;
 ```
 
 See also
