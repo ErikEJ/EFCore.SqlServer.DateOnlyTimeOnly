@@ -7,7 +7,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
     {
         public const string SqlServerTypeName = "date";
 
-        public virtual RelationalTypeMapping FindMapping(in RelationalTypeMappingInfo mappingInfo)
+        public virtual RelationalTypeMapping? FindMapping(in RelationalTypeMappingInfo mappingInfo)
         {
             var clrType = mappingInfo.ClrType;
             var storeTypeName = mappingInfo.StoreTypeName;

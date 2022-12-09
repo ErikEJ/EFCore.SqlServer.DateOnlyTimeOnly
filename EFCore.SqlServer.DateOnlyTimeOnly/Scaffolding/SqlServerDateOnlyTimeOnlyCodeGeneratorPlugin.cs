@@ -7,12 +7,13 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Scaffolding
 {
     internal class SqlServerDateOnlyTimeOnlyCodeGeneratorPlugin : ProviderCodeGeneratorPlugin
     {
-        public override MethodCallCodeFragment GenerateProviderOptions()
+        public override MethodCallCodeFragment? GenerateProviderOptions()
         {
-            return new MethodCallCodeFragment(
-                typeof(SqlServerDateOnlyTimeOnlyDbContextOptionsBuilderExtensions).GetRuntimeMethod(
+            var methodInfo = typeof(SqlServerDateOnlyTimeOnlyDbContextOptionsBuilderExtensions).GetRuntimeMethod(
                     nameof(SqlServerDateOnlyTimeOnlyDbContextOptionsBuilderExtensions.UseDateOnlyTimeOnly),
-                    new[] { typeof(SqlServerDbContextOptionsBuilder) }));
+                    new[] { typeof(SqlServerDbContextOptionsBuilder) });
+
+            return methodInfo != null ? new MethodCallCodeFragment(methodInfo) : null;
         }
     }
 }

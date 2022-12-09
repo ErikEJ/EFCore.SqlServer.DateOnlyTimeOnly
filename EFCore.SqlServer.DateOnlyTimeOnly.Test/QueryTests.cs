@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.SqlServer.Test.Models;
 using Xunit;
 
@@ -8,6 +9,8 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
     public class QueryTests : IDisposable
     {
         private readonly DateAndTimeContext _db;
+
+        private string SelectStatement => "SELECT [e].[Id], [e].[StartDate], [e].[StartTime] FROM [Events] AS [e]";
 
         public QueryTests()
         {
@@ -78,6 +81,86 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
                 condense(_db.Sql));
 
             Assert.Equal(new[] { 1 }, results);
+        }
+
+        [Fact]
+        public async Task DateOnly_AddYears()
+        {
+            var results = await _db.Events.Where(e => e.StartDate.AddYears(1) >= new DateOnly(2019, 7, 1)).ToListAsync();
+
+            Assert.Equal(
+               condense(@$"{SelectStatement} WHERE DATEADD(year, CAST(1 AS int), [e].[StartDate]) >= '2019-07-01'"),
+               condense(_db.Sql));
+
+            Assert.Equal(2, results.Count);
+        }
+
+        [Fact]
+        public async Task DateOnly_AddMonths()
+        {
+            var results = await _db.Events.Where(r => r.StartDate.AddMonths(1) >= new DateOnly(2019, 7, 1)).ToListAsync();
+
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEADD(month, CAST(1 AS int), [e].[StartDate]) >= '2019-07-01'"),
+                condense(_db.Sql));
+
+            Assert.Equal(2, results.Count);
+        }
+
+        [Fact]
+        public async Task DateOnly_AddDays()
+        {
+            var results = await _db.Events.Where(r => r.StartDate.AddDays(45) >= new DateOnly(2019, 7, 1)).ToListAsync();
+
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEADD(day, CAST(45 AS int), [e].[StartDate]) >= '2019-07-01'"),
+                condense(_db.Sql));
+
+            Assert.Equal(2, results.Count);
+        }
+
+        [Fact]
+        public async Task DateOnly_DatePart_Year()
+        {
+            var results = await _db.Events.Where(r => r.StartDate.Year == 2022).ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEPART(year, [e].[StartDate]) = 2022"),
+                condense(_db.Sql));
+
+            Assert.Equal(2, results.Count);
+        }
+
+        [Fact]
+        public async Task DateOnly_DatePart_Month()
+        {
+            var results = await _db.Events.Where(r => r.StartDate.Month == 12).ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEPART(month, [e].[StartDate]) = 12"),
+                condense(_db.Sql));
+
+            Assert.Equal(2, results.Count);
+        }
+
+        [Fact]
+        public async Task DateOnly_DatePart_DayOfYear()
+        {
+            var results = await _db.Events.Where(e => e.StartDate.DayOfYear == 1).ToListAsync();
+            Assert.Equal(
+               condense(@$"{SelectStatement} WHERE DATEPART(dayofyear, [e].[StartDate]) = 1"),
+               condense(_db.Sql));
+
+            Assert.Single(results);
+        }
+
+        [Fact]
+        public async Task DateOnly_DatePart_Day()
+        {
+            var results = await _db.Events.Where(r => r.StartDate.Day == 1).ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEPART(day, [e].[StartDate]) = 1"),
+                condense(_db.Sql));
+
+            Assert.Single(results);
         }
 
         public void Dispose()

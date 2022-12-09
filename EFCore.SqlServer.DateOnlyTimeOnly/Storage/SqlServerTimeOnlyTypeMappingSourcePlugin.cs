@@ -8,7 +8,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
     {
         public const string SqlServerTypeName = "time";
 
-        public virtual RelationalTypeMapping FindMapping(in RelationalTypeMappingInfo mappingInfo)
+        public virtual RelationalTypeMapping? FindMapping(in RelationalTypeMappingInfo mappingInfo)
         {
             var clrType = mappingInfo.ClrType;
             var storeTypeName = mappingInfo.StoreTypeNameBase;
@@ -19,7 +19,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
                 : null;
         }
 
-        private int? GetPrecision(string storeTypeName)
+        private int? GetPrecision(string? storeTypeName)
         {
             int? precision = null;
 

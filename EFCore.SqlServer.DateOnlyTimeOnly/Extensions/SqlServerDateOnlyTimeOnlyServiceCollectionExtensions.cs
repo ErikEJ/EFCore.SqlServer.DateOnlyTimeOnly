@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.ExpressionTranslators;
 using Microsoft.EntityFrameworkCore.SqlServer.Storage;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -19,7 +21,10 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             new EntityFrameworkRelationalServicesBuilder(serviceCollection)
                 .TryAdd<IRelationalTypeMappingSourcePlugin, SqlServerTimeOnlyTypeMappingSourcePlugin>()
-                .TryAdd<IRelationalTypeMappingSourcePlugin, SqlServerDateOnlyTypeMappingSourcePlugin>();
+                .TryAdd<IRelationalTypeMappingSourcePlugin, SqlServerDateOnlyTypeMappingSourcePlugin>()
+                .TryAdd<IMethodCallTranslatorPlugin, SqlServerDateOnlyMethodCallTranslatorPlugin>();
+
+            serviceCollection.AddScoped<IMemberTranslatorProvider, DateOnlyTimeOnlyTypesMemberTranslatorPlugin>();
 
             return serviceCollection;
         }

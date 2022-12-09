@@ -26,7 +26,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Test.Models
                 .HasData(
                     new EventSchedule { Id = 1, StartDate = new DateOnly(2022, 12, 13), StartTime = new TimeOnly(9, 9) },
                     new EventSchedule { Id = 2, StartDate = new DateOnly(2022, 12, 24), StartTime = new TimeOnly(10, 10) },
-                    new EventSchedule { Id = 3, StartDate = new DateOnly(1758, 12, 24), StartTime = new TimeOnly(11, 11) });
+                    new EventSchedule { Id = 3, StartDate = new DateOnly(1758, 1, 1), StartTime = new TimeOnly(11, 11) });
         }
     }
 }

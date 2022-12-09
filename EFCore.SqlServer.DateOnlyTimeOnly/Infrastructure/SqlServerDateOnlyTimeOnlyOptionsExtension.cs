@@ -11,7 +11,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Infrastructure
 {
     internal class SqlServerDateOnlyTimeOnlyOptionsExtension : IDbContextOptionsExtension
     {
-        private DbContextOptionsExtensionInfo _info;
+        private DbContextOptionsExtensionInfo? _info;
 
         public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
 

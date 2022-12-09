@@ -8,6 +8,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)keyfile.snk</AssemblyOriginatorKeyFile>
     <Features>strict</Features>
+    <NoWarn>$(NoWarn);EF1001</NoWarn>
     <LangVersion>latest</LangVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
