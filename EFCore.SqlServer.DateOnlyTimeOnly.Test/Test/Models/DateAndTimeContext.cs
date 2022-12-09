@@ -16,7 +16,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Test.Models
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options
                 .UseSqlServer(
-                    @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HierarchyIdTests",
+                    @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DateOnlyTimeOnlyTests",
                     x => x.UseDateOnlyTimeOnly())
                 .UseLoggerFactory(_loggerFactory);
 

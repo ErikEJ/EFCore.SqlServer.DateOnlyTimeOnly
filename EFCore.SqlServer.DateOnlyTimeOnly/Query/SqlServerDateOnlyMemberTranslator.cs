@@ -1,14 +1,19 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
-internal class SqlServerDateOnlyMemberTranslator : IMemberTranslator
+/// <summary>
+///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+///     any release. You should only use it directly in your code with extreme caution and knowing that
+///     doing so can result in application failures when updating to a new Entity Framework Core release.
+/// </summary>
+public class SqlServerDateOnlyMemberTranslator : IMemberTranslator
 {
     private static readonly Dictionary<string, string> DatePartMapping
         = new()
@@ -20,16 +25,25 @@ internal class SqlServerDateOnlyMemberTranslator : IMemberTranslator
         };
 
     private readonly ISqlExpressionFactory _sqlExpressionFactory;
-    private readonly IRelationalTypeMappingSource _typeMappingSource;
 
+    /// <summary>
+    ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+    ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+    ///     any release. You should only use it directly in your code with extreme caution and knowing that
+    ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+    /// </summary>
     public SqlServerDateOnlyMemberTranslator(
-        ISqlExpressionFactory sqlExpressionFactory,
-        IRelationalTypeMappingSource typeMappingSource)
+        ISqlExpressionFactory sqlExpressionFactory)
     {
         _sqlExpressionFactory = sqlExpressionFactory;
-        _typeMappingSource = typeMappingSource;
     }
 
+    /// <summary>
+    ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+    ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+    ///     any release. You should only use it directly in your code with extreme caution and knowing that
+    ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+    /// </summary>
     public virtual SqlExpression? Translate(
         SqlExpression? instance,
         MemberInfo member,

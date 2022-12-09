@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -17,7 +16,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Query.ExpressionTranslators
             AddTranslators(
                 new IMemberTranslator[]
                 {
-                    new SqlServerDateOnlyMemberTranslator(sqlExpressionFactory, typeMappingSource),
+                    new SqlServerDateOnlyMemberTranslator(sqlExpressionFactory),
                     new SqlServerTimeOnlyMemberTranslator(sqlExpressionFactory),
                 });
         }

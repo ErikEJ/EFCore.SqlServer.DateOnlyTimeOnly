@@ -155,13 +155,47 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
         [Fact]
         public async Task DateOnly_DatePart_Day()
         {
-            var results = await _db.Events.Where(r => r.StartDate.Day == 1).ToListAsync();
+            var results = await _db.Events.Where(e => e.StartDate.Day == 1).ToListAsync();
             Assert.Equal(
                 condense(@$"{SelectStatement} WHERE DATEPART(day, [e].[StartDate]) = 1"),
                 condense(_db.Sql));
 
             Assert.Single(results);
         }
+
+        [Fact]
+        public async Task DateOnly_DateDiff_Year()
+        {
+            var results = await _db.Events.Where(e => EF.Functions.DateDiffYear(e.StartDate, new DateOnly(2024, 12, 24)) == 2).ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEDIFF(year, [e].[StartDate], '2024-12-24') = 2"),
+                condense(_db.Sql));
+
+            Assert.Equal(2, results.Count);
+        }
+
+        [Fact]
+        public async Task DateOnly_DateDiff_Month()
+        {
+            var results = await _db.Events.Where(e => EF.Functions.DateDiffMonth(e.StartDate, new DateOnly(2020, 1, 1)) >= 6).ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEDIFF(month, [e].[StartDate], '2020-01-01') >= 6"),
+                condense(_db.Sql));
+
+            Assert.Single(results);
+        }
+
+        [Fact]
+        public async Task DateOnly_DateDiff_Day()
+        {
+            var results = await _db.Events.Where(e => EF.Functions.DateDiffDay(e.StartDate, new DateOnly(2020, 1, 1)) >= 200).ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEDIFF(day, [e].[StartDate], '2020-01-01') >= 200"),
+                condense(_db.Sql));
+
+            Assert.Single(results);
+        }
+
 
         public void Dispose()
         {
