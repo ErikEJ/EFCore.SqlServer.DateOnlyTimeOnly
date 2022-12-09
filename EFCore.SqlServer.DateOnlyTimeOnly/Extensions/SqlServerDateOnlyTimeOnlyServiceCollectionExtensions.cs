@@ -22,7 +22,8 @@ namespace Microsoft.Extensions.DependencyInjection
             new EntityFrameworkRelationalServicesBuilder(serviceCollection)
                 .TryAdd<IRelationalTypeMappingSourcePlugin, SqlServerTimeOnlyTypeMappingSourcePlugin>()
                 .TryAdd<IRelationalTypeMappingSourcePlugin, SqlServerDateOnlyTypeMappingSourcePlugin>()
-                .TryAdd<IMethodCallTranslatorPlugin, SqlServerDateOnlyMethodCallTranslatorPlugin>();
+                .TryAdd<IMethodCallTranslatorPlugin, SqlServerDateOnlyMethodCallTranslatorPlugin>()
+                .TryAdd<IMethodCallTranslatorPlugin, SqlServerTimeOnlyMethodCallTranslatorPlugin>();
 
             serviceCollection.AddScoped<IMemberTranslatorProvider, DateOnlyTimeOnlyTypesMemberTranslatorPlugin>();
 

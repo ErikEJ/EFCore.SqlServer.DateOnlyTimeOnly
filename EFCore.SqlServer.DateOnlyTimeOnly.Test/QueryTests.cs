@@ -56,11 +56,11 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
         {
             var results = Enumerable.ToList(
                 from p in _db.Events
-                where p.StartTime == new TimeOnly(9, 9)
+                where p.StartTime == new TimeOnly(9, 9, 9, 9)
                 select p.Id);
 
             Assert.Equal(
-                condense(@"SELECT [e].[Id] FROM [Events] AS [e] WHERE [e].[StartTime] = '09:09:00'"),
+                condense(@"SELECT [e].[Id] FROM [Events] AS [e] WHERE [e].[StartTime] = '09:09:09.009'"),
                 condense(_db.Sql));
 
             Assert.Equal(new[] { 1 }, results);
@@ -69,7 +69,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
         [Fact]
         public void GetTimeOnly_can_translate_Parameter()
         {
-            var startTime = new TimeOnly(9, 9);
+            var startTime = new TimeOnly(9, 9, 9, 9);
 
             var results = Enumerable.ToList(
                 from p in _db.Events
@@ -196,6 +196,74 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
             Assert.Single(results);
         }
 
+        [Fact]
+        public async Task TimeOnly_AddHours()
+        {
+            var results = await _db.Events.Where(r => r.StartTime.AddHours(2) >= new TimeOnly(12, 0, 0)).ToListAsync();
+
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEADD(hour, CAST(2.0E0 AS int), [e].[StartTime]) >= '12:00:00'"),
+                condense(_db.Sql));
+
+            Assert.Equal(2, results.Count);
+        }
+
+        [Fact]
+        public async Task TimeOnly_AddMinutes()
+        {
+            var results = await _db.Events.Where(r => r.StartTime.AddMinutes(120) >= new TimeOnly(12, 0, 0)).ToListAsync();
+
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEADD(minute, CAST(120.0E0 AS int), [e].[StartTime]) >= '12:00:00'"),
+                condense(_db.Sql));
+
+            Assert.Equal(2, results.Count);
+        }
+
+        [Fact]
+        public async Task TimeOnly_DatePart_Hour()
+        {
+            var results = await _db.Events.Where(r => r.StartTime.Hour == 9).ToListAsync();
+
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEPART(hour, [e].[StartTime]) = 9"),
+                condense(_db.Sql));
+
+            Assert.Single(results);
+        }
+
+        [Fact]
+        public async Task TimeOnly_DatePart_Minute()
+        {
+            var results = await _db.Events.Where(r => r.StartTime.Minute == 9).ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEPART(minute, [e].[StartTime]) = 9"),
+                condense(_db.Sql));
+
+            Assert.Single(results);
+        }
+
+        [Fact]
+        public async Task TimeOnly_DatePart_Second()
+        {
+            var results = await _db.Events.Where(r => r.StartTime.Second == 9).ToListAsync();
+            Assert.Equal(
+                 condense(@$"{SelectStatement} WHERE DATEPART(second, [e].[StartTime]) = 9"),
+                 condense(_db.Sql));
+
+            Assert.Single(results);
+        }
+
+        [Fact]
+        public async Task TimeOnly_DatePart_Millisecond()
+        {
+            var results = await _db.Events.Where(r => r.StartTime.Millisecond == 9).ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE DATEPART(millisecond, [e].[StartTime]) = 9"),
+                condense(_db.Sql));
+
+            Assert.Single(results);
+        }
 
         public void Dispose()
         {

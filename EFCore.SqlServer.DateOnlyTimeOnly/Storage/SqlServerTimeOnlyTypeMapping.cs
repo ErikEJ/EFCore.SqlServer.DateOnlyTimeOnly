@@ -76,7 +76,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
         }
 
         protected override string GenerateNonNullSqlLiteral(object value)
-            => value is TimeSpan timeSpan && timeSpan.Milliseconds == 0
+            => value is TimeOnly timeOnly && timeOnly.Millisecond == 0
                 ? string.Format(
                     CultureInfo.InvariantCulture, _timeFormats[0], value) //handle trailing decimal separator when no fractional seconds
                 : string.Format(CultureInfo.InvariantCulture, SqlLiteralFormatString, value);
