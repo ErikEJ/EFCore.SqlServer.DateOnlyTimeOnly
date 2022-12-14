@@ -67,6 +67,21 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
         }
 
         [Fact]
+        public void GetTimeOnly_can_translate_issue_2()
+        {
+            var results = Enumerable.ToList(
+                from p in _db.Events
+                where p.StartTime == new TimeOnly(20, 20, 59, 998)
+                select p.Id);
+
+            Assert.Equal(
+                condense(@"SELECT [e].[Id] FROM [Events] AS [e] WHERE [e].[StartTime] = '20:20:59.998'"),
+                condense(_db.Sql));
+
+            Assert.True(results.Count == 0);
+        }
+
+        [Fact]
         public void GetTimeOnly_can_translate_Parameter()
         {
             var startTime = new TimeOnly(9, 9, 9, 9);

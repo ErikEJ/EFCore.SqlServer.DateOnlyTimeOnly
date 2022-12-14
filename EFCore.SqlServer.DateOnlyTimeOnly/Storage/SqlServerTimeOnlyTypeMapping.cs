@@ -11,14 +11,14 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
     {
         private readonly string[] _timeFormats =
         {
-            @"'{0:hh\:mm\:ss}'",
-            @"'{0:hh\:mm\:ss\.F}'",
-            @"'{0:hh\:mm\:ss\.FF}'",
-            @"'{0:hh\:mm\:ss\.FFF}'",
-            @"'{0:hh\:mm\:ss\.FFFF}'",
-            @"'{0:hh\:mm\:ss\.FFFFF}'",
-            @"'{0:hh\:mm\:ss\.FFFFFF}'",
-            @"'{0:hh\:mm\:ss\.FFFFFFF}'"
+            @"'{0:HH\:mm\:ss}'",
+            @"'{0:HH\:mm\:ss\.F}'",
+            @"'{0:HH\:mm\:ss\.FF}'",
+            @"'{0:HH\:mm\:ss\.FFF}'",
+            @"'{0:HH\:mm\:ss\.FFFF}'",
+            @"'{0:HH\:mm\:ss\.FFFFF}'",
+            @"'{0:HH\:mm\:ss\.FFFFFF}'",
+            @"'{0:HH\:mm\:ss\.FFFFFFF}'"
         };
 
         public SqlServerTimeOnlyTypeMapping(
