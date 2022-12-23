@@ -1,7 +1,7 @@
 ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly
 ========================================
 
-![build status](https://img.shields.io/github/workflow/status/ErikEJ/EFCore.SqlServer.DateOnlyTimeOnly/.NET/main) [![latest version](https://img.shields.io/nuget/v/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly)](https://www.nuget.org/packages/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly) [![downloads](https://img.shields.io/nuget/dt/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly)](https://www.nuget.org/packages/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly) ![license](https://img.shields.io/github/license/ErikEJ/EFCore.SqlServer.DateOnlyTimeOnly)
+![build status](https://img.shields.io/github/actions/workflow/status/ErikEJ/EFCore.SqlServer.DateOnlyTimeOnly/dotnet.yml?main) [![latest version](https://img.shields.io/nuget/v/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly)](https://www.nuget.org/packages/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly) [![downloads](https://img.shields.io/nuget/dt/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly)](https://www.nuget.org/packages/ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly) ![license](https://img.shields.io/github/license/ErikEJ/EFCore.SqlServer.DateOnlyTimeOnly)
 
 Adds .NET 6 or later `DateOnly` and `TimeOnly` support to the SQL Server EF Core provider. These types map directly to the SQL Server `date` and `time` data types.
 
