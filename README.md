@@ -35,7 +35,7 @@ options.UseSqlServer(
     x => x.UseDateOnlyTimeOnly());
 ```
 
-Add `DateOnly` and `TimeOnly` properties to your entity types.
+Add `DateOnly` and `TimeOnly` properties to your entity types. Or reverse engineer a table with `date` and `time` columns.
 
 ```cs
 class EventSchedule
