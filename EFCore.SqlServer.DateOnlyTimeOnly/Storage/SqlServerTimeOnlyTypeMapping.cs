@@ -53,7 +53,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
             if (Precision.HasValue)
             {
                 // Workaround for inconsistent use of precision/scale between EF and SqlClient for VarTime types
-                parameter.Scale = unchecked((byte)Precision.Value);
+                parameter.Scale = (byte)Precision.Value;
             }
         }
 
