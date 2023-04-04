@@ -6,7 +6,7 @@
 	<RootNamespace>Microsoft.EntityFrameworkCore.SqlServer</RootNamespace>
 	<Description>Adds DateOnly and TimeOnly support to the SQL Server EF Core 6 provider</Description>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-	<PackageReleaseNotes>More DateDiff translations</PackageReleaseNotes>
+	<PackageReleaseNotes>Update to Microsoft.Data.SqlClient 5.1.1</PackageReleaseNotes>
 	<Version>6.0.2</Version>
 	<PackageId>ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly</PackageId>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
