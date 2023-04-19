@@ -8,13 +8,13 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
 {
     public class QueryTests : IDisposable
     {
-        private readonly DateAndTimeContext _db;
+        private readonly DateAndTimeContextQuery _db;
 
-        private string SelectStatement => "SELECT [e].[Id], [e].[StartDate], [e].[StartTime] FROM [Events] AS [e]";
+        private string SelectStatement => "SELECT [e].[Id], [e].[LegacyDateTime], [e].[StartDate], [e].[StartTime] FROM [Events] AS [e]";
 
         public QueryTests()
         {
-            _db = new DateAndTimeContext();
+            _db = new DateAndTimeContextQuery();
             _db.Database.EnsureDeleted();
             _db.Database.EnsureCreated();
         }
@@ -206,6 +206,17 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
             var results = await _db.Events.Where(e => EF.Functions.DateDiffDay(e.StartDate, new DateOnly(2020, 1, 1)) >= 200).ToListAsync();
             Assert.Equal(
                 condense(@$"{SelectStatement} WHERE DATEDIFF(day, [e].[StartDate], '2020-01-01') >= 200"),
+                condense(_db.Sql));
+
+            Assert.Single(results);
+        }
+
+        [Fact]
+        public async Task DateOnly_FromDateTime()
+        {
+            var results = await _db.Events.Where(e => DateOnly.FromDateTime(e.LegacyDateTime) >= new DateOnly(2000, 1, 1)).ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE CONVERT(date, [e].[LegacyDateTime]) >= '2000-01-01'"),
                 condense(_db.Sql));
 
             Assert.Single(results);
