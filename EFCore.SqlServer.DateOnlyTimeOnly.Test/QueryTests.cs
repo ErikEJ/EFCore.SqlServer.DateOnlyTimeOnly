@@ -216,7 +216,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
         {
             var results = await _db.Events.Where(e => DateOnly.FromDateTime(e.LegacyDateTime) >= new DateOnly(2000, 1, 1)).ToListAsync();
             Assert.Equal(
-                condense(@$"{SelectStatement} WHERE CONVERT(date, [e].[LegacyDateTime]) >= '2000-01-01'"),
+                condense(@$"{SelectStatement} WHERE CAST([e].[LegacyDateTime] AS date) >= '2000-01-01'"),
                 condense(_db.Sql));
 
             Assert.Single(results);

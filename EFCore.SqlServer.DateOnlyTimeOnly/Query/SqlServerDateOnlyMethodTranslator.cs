@@ -52,12 +52,14 @@ public class SqlServerDateOnlyMethodTranslator : IMethodCallTranslator
         IReadOnlyList<SqlExpression> arguments,
         IDiagnosticsLogger<DbLoggerCategory.Query> logger)
     {
+        var dateOnlyType = typeof(DateOnly);
+
         if (_methodInfoDatePartMapping.TryGetValue(method, out var datePart)
             && instance != null)
         {
             if (instance is SqlConstantExpression instanceConstant)
             {
-                instance = instanceConstant.ApplyTypeMapping(_typeMappingSource.FindMapping(typeof(DateOnly), "date"));
+                instance = instanceConstant.ApplyTypeMapping(_typeMappingSource.FindMapping(dateOnlyType, "date"));
             }
 
             return _sqlExpressionFactory.Function(
@@ -69,17 +71,11 @@ public class SqlServerDateOnlyMethodTranslator : IMethodCallTranslator
                 instance.TypeMapping);
         }
 
-        if (method.DeclaringType == typeof(DateOnly)
+        if (method.DeclaringType == dateOnlyType
             && method.Name == nameof(DateOnly.FromDateTime)
             && arguments.Count == 1)
         {
-            return _sqlExpressionFactory.Function(
-                "CONVERT",
-                new[] { _sqlExpressionFactory.Fragment("date"), arguments[0] },
-                nullable: true,
-                argumentsPropagateNullability: new[] { false, true },
-                typeof(DateOnly),
-                _typeMappingSource.FindMapping(typeof(DateOnly), "date"));
+            return _sqlExpressionFactory.Convert(arguments[0], dateOnlyType);
         }
 
         return null;
