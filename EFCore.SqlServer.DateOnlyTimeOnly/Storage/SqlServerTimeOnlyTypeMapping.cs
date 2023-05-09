@@ -21,6 +21,18 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
             @"'{0:HH\:mm\:ss\.FFFFFFF}'"
         };
 
+        private readonly string[] _timeSpanTimeFormats =
+        {
+            @"'{0:hh\:mm\:ss}'",
+            @"'{0:hh\:mm\:ss\.F}'",
+            @"'{0:hh\:mm\:ss\.FF}'",
+            @"'{0:hh\:mm\:ss\.FFF}'",
+            @"'{0:hh\:mm\:ss\.FFFF}'",
+            @"'{0:hh\:mm\:ss\.FFFFF}'",
+            @"'{0:hh\:mm\:ss\.FFFFFF}'",
+            @"'{0:hh\:mm\:ss\.FFFFFFF}'"
+        };
+
         public SqlServerTimeOnlyTypeMapping(
             string storeType,
             DbType? dbType = System.Data.DbType.Time,
@@ -75,10 +87,43 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Storage
             }
         }
 
+        string TimeSpanSqlLiteralFormatString
+        {
+            get
+            {
+                if (Precision.HasValue)
+                {
+                    var precision = Precision.Value;
+                    if (precision <= 7
+                        && precision >= 0)
+                    {
+                        return _timeSpanTimeFormats[precision];
+                    }
+                }
+
+                return _timeSpanTimeFormats[7];
+            }
+        }
+
+
         protected override string GenerateNonNullSqlLiteral(object value)
-            => value is TimeOnly timeOnly && timeOnly.Millisecond == 0
-                ? string.Format(
-                    CultureInfo.InvariantCulture, _timeFormats[0], value) //handle trailing decimal separator when no fractional seconds
-                : string.Format(CultureInfo.InvariantCulture, SqlLiteralFormatString, value);
+        {
+            if (value is TimeOnly { Millisecond: 0 })
+            {
+                return string.Format(CultureInfo.InvariantCulture, _timeFormats[0], value); //handle trailing decimal separator when no fractional seconds
+            }
+
+            if (value is TimeSpan { Milliseconds: 0 })
+            {
+                return string.Format(CultureInfo.InvariantCulture, _timeSpanTimeFormats[0], value); //handle trailing decimal separator when no fractional seconds
+            }
+
+            if (value is TimeSpan)
+            {
+                return string.Format(CultureInfo.InvariantCulture, TimeSpanSqlLiteralFormatString, value); //handle trailing decimal separator when no fractional seconds
+            }
+
+            return string.Format(CultureInfo.InvariantCulture, SqlLiteralFormatString, value);
+        }
     }
 }
