@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,8 +6,8 @@
 	<RootNamespace>Microsoft.EntityFrameworkCore.SqlServer</RootNamespace>
 	<Description>Adds DateOnly and TimeOnly support to the SQL Server EF Core 6 provider</Description>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-	<PackageReleaseNotes>Add DateOnly.FromDateTime translation</PackageReleaseNotes>
-	<Version>6.0.4-preview1</Version>
+	<PackageReleaseNotes>Fix update pipeline mapping issue</PackageReleaseNotes>
+	<Version>6.0.4</Version>
 	<PackageId>ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly</PackageId>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

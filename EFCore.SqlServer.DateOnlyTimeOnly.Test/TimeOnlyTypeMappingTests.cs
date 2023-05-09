@@ -35,6 +35,10 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
                     scale: null));
 
             AssertMapping<TimeOnly>(mapping);
+
+            Assert.Equal("'15:31:00'", mapping.GenerateSqlLiteral(new TimeOnly(15, 31)));
+
+            Assert.Equal("'15:31:00'", mapping.GenerateSqlLiteral(new TimeSpan(15, 31, 0)));
         }
 
         [Fact]
@@ -50,6 +54,10 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
                     scale: null));
 
             AssertMapping<TimeOnly>(mapping);
+
+            Assert.Equal("'15:31:01.048'", mapping.GenerateSqlLiteral(new TimeOnly(15, 31, 1, 48)));
+
+            Assert.Equal("'15:31:01.048'", mapping.GenerateSqlLiteral(new TimeSpan(0, 15, 31, 1, 48)));
         }
 
         private static void AssertMapping<T>(

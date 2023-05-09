@@ -7,7 +7,7 @@
 	<Description>Adds DateOnly and TimeOnly support to the SQL Server EF Core 7 provider</Description>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
 	<PackageReleaseNotes>Fix update pipeline mapping issue</PackageReleaseNotes>	  
-	<Version>7.0.4-preview1</Version>
+	<Version>7.0.4</Version>
 	<PackageId>ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly</PackageId>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
