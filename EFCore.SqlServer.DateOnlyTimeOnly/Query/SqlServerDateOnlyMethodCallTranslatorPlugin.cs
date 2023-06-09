@@ -27,6 +27,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Query.ExpressionTranslators
             {
                 new SqlServerDateOnlyMethodTranslator(sqlExpressionFactory, typeMappingSource),
                 new SqlServerDateOnlyTimeOnlyDateDiffFunctionsTranslator(sqlExpressionFactory),
+                new SqlServerDateOnlyTimeOnlyObjectToStringTranslator(sqlExpressionFactory),
             };
         }
 
