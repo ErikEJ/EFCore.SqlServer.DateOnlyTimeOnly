@@ -34,8 +34,6 @@ internal class SqlServerDateOnlyTimeOnlyObjectToStringTranslator : IMethodCallTr
     public SqlExpression? Translate(SqlExpression? instance, MethodInfo method,
         IReadOnlyList<SqlExpression> arguments, IDiagnosticsLogger<DbLoggerCategory.Query> logger)
     {
-        //SqlServerObjectToStringTranslator
-
         if (instance == null || method.Name != nameof(ToString) || arguments.Count != 0)
         {
             return null;
