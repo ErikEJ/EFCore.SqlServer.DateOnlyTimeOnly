@@ -223,6 +223,17 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
         }
 
         [Fact]
+        public async Task DateOnly_ToString()
+        {
+            var results = await _db.Events.Where(e => e.StartDate.ToString() == "2022-12-13").ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE CONVERT(varchar(100), [e].[StartDate]) = N'2022-12-13'"),
+                condense(_db.Sql));
+
+            Assert.Single(results);
+        }
+
+        [Fact]
         public async Task TimeOnly_AddHours()
         {
             var results = await _db.Events.Where(r => r.StartTime.AddHours(2) >= new TimeOnly(12, 0, 0)).ToListAsync();
@@ -286,6 +297,17 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
             var results = await _db.Events.Where(r => r.StartTime.Millisecond == 9).ToListAsync();
             Assert.Equal(
                 condense(@$"{SelectStatement} WHERE DATEPART(millisecond, [e].[StartTime]) = 9"),
+                condense(_db.Sql));
+
+            Assert.Single(results);
+        }
+
+        [Fact]
+        public async Task TimeOnly_ToString()
+        {
+            var results = await _db.Events.Where(e => e.StartTime.ToString() == "09:09:09.0090000").ToListAsync();
+            Assert.Equal(
+                condense(@$"{SelectStatement} WHERE CONVERT(varchar(100), [e].[StartTime]) = N'09:09:09.0090000'"),
                 condense(_db.Sql));
 
             Assert.Single(results);
