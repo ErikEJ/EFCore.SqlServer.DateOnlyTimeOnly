@@ -60,6 +60,24 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
             Assert.Equal("'15:31:01.048'", mapping.GenerateSqlLiteral(new TimeSpan(0, 15, 31, 1, 48)));
         }
 
+        [Fact]
+        public void Maps_timeonly_column_type()
+        {
+            var mapping = CreateMapper().FindMapping(
+                new RelationalTypeMappingInfo(typeof(TimeOnly)));
+
+            AssertMapping<TimeOnly>(mapping);
+        }
+
+        [Fact]
+        public void Maps_timeonly_column_type_nullable()
+        {
+            var mapping = CreateMapper().FindMapping(
+                new RelationalTypeMappingInfo(typeof(TimeOnly?)));
+
+            AssertMapping<TimeOnly>(mapping);
+        }
+
         private static void AssertMapping<T>(
             RelationalTypeMapping mapping)
         {

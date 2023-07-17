@@ -37,6 +37,24 @@ namespace Microsoft.EntityFrameworkCore.SqlServer
             AssertMapping<DateOnly>(mapping);
         }
 
+        [Fact]
+        public void Maps_dateonly_column_type()
+        {
+            var mapping = CreateMapper().FindMapping(
+                new RelationalTypeMappingInfo(typeof(DateOnly)));
+
+            AssertMapping<DateOnly>(mapping);
+        }
+
+        [Fact]
+        public void Maps_dateonly_column_type_nullable()
+        {
+            var mapping = CreateMapper().FindMapping(
+                new RelationalTypeMappingInfo(typeof(DateOnly?)));
+
+            AssertMapping<DateOnly>(mapping);
+        }
+
         private static void AssertMapping<T>(
             RelationalTypeMapping mapping)
         {
