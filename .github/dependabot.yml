@@ -6,3 +6,9 @@ updates:
       interval: "monthly"
     allow:
       - dependency-name: Microsoft.Data.SqlClient
+
+  - package-ecosystem: github-actions 
+    directory: "/"
+    open-pull-requests-limit: 5
+    schedule:
+      interval: "weekly"
