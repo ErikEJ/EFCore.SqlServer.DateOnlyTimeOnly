@@ -3,12 +3,9 @@ updates:
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
-      interval: "monthly"
-    allow:
-      - dependency-name: Microsoft.Data.SqlClient
+      interval: "weekly"
 
   - package-ecosystem: github-actions 
     directory: "/"
-    open-pull-requests-limit: 5
     schedule:
       interval: "weekly"
