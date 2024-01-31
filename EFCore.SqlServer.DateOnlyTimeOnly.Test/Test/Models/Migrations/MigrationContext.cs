@@ -19,7 +19,7 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Test.Models.Migrations
             => options
                 .UseSqlServer(
                     @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HierarchyIdMigrationTests",
-                    x => x.UseDateOnlyTimeOnly());
+                    x => x.UseDateOnlyTimeOnly().EnableRetryOnFailure());
 
         /// <summary>
         /// Removes annotations from the model that can
