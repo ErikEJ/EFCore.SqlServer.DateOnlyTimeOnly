@@ -60,55 +60,54 @@ public class SqlServerTimeOnlyMethodTranslator : IMethodCallTranslator
             return null;
         }
 
-        if (method == FromDateTime && instance is null && arguments.Count == 1)
+        if ((method == FromDateTime || method == FromTimeSpan)
+            && instance is null
+            && arguments.Count == 1)
         {
             return _sqlExpressionFactory.Convert(arguments[0], typeof(TimeOnly));
         }
 
-        if (method == FromTimeSpan && instance is null && arguments.Count == 1)
+        if (instance is null)
         {
-            return _sqlExpressionFactory.Convert(arguments[0], typeof(TimeOnly));
+            return null;
         }
 
-        if (instance is not null)
+        if (method == AddHoursMethod || method == AddMinutesMethod)
         {
-            if (method == AddHoursMethod || method == AddMinutesMethod)
+            var datePart = method == AddHoursMethod ? "hour" : "minute";
+
+            // Some Add methods accept a double, and SQL Server DateAdd does not accept number argument outside of int range
+            if (arguments[0] is SqlConstantExpression { Value: double and (<= int.MinValue or >= int.MaxValue) })
             {
-                var datePart = method == AddHoursMethod ? "hour" : "minute";
-
-                // Some Add methods accept a double, and SQL Server DateAdd does not accept number argument outside of int range
-                if (arguments[0] is SqlConstantExpression { Value: double and (<= int.MinValue or >= int.MaxValue) })
-                {
-                    return null;
-                }
-
-                instance = _sqlExpressionFactory.ApplyDefaultTypeMapping(instance);
-
-                return _sqlExpressionFactory.Function(
-                    "DATEADD",
-                    new[] { _sqlExpressionFactory.Fragment(datePart), _sqlExpressionFactory.Convert(arguments[0], typeof(int)), instance },
-                    nullable: true,
-                    argumentsPropagateNullability: new[] { false, true, true },
-                    instance.Type,
-                    instance.TypeMapping);
+                return null;
             }
 
-            // Translate TimeOnly.IsBetween to a >= b AND a < c.
-            // Since a is evaluated multiple times, only translate for simple constructs (i.e. avoid duplicating complex subqueries).
-            if (method == IsBetweenMethod
-                && instance is ColumnExpression or SqlConstantExpression or SqlParameterExpression)
-            {
-                var typeMapping = ExpressionExtensions.InferTypeMapping(instance, arguments[0], arguments[1]);
-                instance = _sqlExpressionFactory.ApplyTypeMapping(instance, typeMapping);
+            instance = _sqlExpressionFactory.ApplyDefaultTypeMapping(instance);
 
-                return _sqlExpressionFactory.And(
-                    _sqlExpressionFactory.GreaterThanOrEqual(
-                        instance,
-                        _sqlExpressionFactory.ApplyTypeMapping(arguments[0], typeMapping)),
-                    _sqlExpressionFactory.LessThan(
-                        instance,
-                        _sqlExpressionFactory.ApplyTypeMapping(arguments[1], typeMapping)));
-            }
+            return _sqlExpressionFactory.Function(
+                "DATEADD",
+                new[] { _sqlExpressionFactory.Fragment(datePart), _sqlExpressionFactory.Convert(arguments[0], typeof(int)), instance },
+                nullable: true,
+                argumentsPropagateNullability: new[] { false, true, true },
+                instance.Type,
+                instance.TypeMapping);
+        }
+
+        // Translate TimeOnly.IsBetween to a >= b AND a < c.
+        // Since a is evaluated multiple times, only translate for simple constructs (i.e. avoid duplicating complex subqueries).
+        if (method == IsBetweenMethod
+            && instance is ColumnExpression or SqlConstantExpression or SqlParameterExpression)
+        {
+            var typeMapping = ExpressionExtensions.InferTypeMapping(instance, arguments[0], arguments[1]);
+            instance = _sqlExpressionFactory.ApplyTypeMapping(instance, typeMapping);
+
+            return _sqlExpressionFactory.And(
+                _sqlExpressionFactory.GreaterThanOrEqual(
+                    instance,
+                    _sqlExpressionFactory.ApplyTypeMapping(arguments[0], typeMapping)),
+                _sqlExpressionFactory.LessThan(
+                    instance,
+                    _sqlExpressionFactory.ApplyTypeMapping(arguments[1], typeMapping)));
         }
 
         return null;
