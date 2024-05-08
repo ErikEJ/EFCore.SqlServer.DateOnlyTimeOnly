@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
-using Microsoft.EntityFrameworkCore.Storage;
 using System.Collections.Generic;
 
 namespace Microsoft.EntityFrameworkCore.SqlServer.Query.ExpressionTranslators
@@ -20,12 +19,11 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Query.ExpressionTranslators
         ///     doing so can result in application failures when updating to a new Entity Framework Core release.
         /// </summary>
         public SqlServerTimeOnlyMethodCallTranslatorPlugin(
-            ISqlExpressionFactory sqlExpressionFactory,
-            IRelationalTypeMappingSource typeMappingSource)
+            ISqlExpressionFactory sqlExpressionFactory)
         {
             Translators = new IMethodCallTranslator[]
             {
-                new SqlServerTimeOnlyMethodTranslator(sqlExpressionFactory, typeMappingSource),
+                new SqlServerTimeOnlyMethodTranslator(sqlExpressionFactory),
             };
         }
 
