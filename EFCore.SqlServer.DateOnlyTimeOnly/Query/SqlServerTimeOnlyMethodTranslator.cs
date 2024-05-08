@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.EntityFrameworkCore.Storage;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System;
 
 namespace Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
@@ -16,14 +15,22 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 /// </summary>
 public class SqlServerTimeOnlyMethodTranslator : IMethodCallTranslator
 {
-    private readonly Dictionary<MethodInfo, string> _methodInfoDatePartMapping = new()
-    {
-        { typeof(TimeOnly).GetRuntimeMethod(nameof(TimeOnly.AddHours), new[] { typeof(double) })!, "hour" },
-        { typeof(TimeOnly).GetRuntimeMethod(nameof(TimeOnly.AddMinutes), new[] { typeof(double) })!, "minute" },
-    };
+    private static readonly MethodInfo AddHoursMethod = typeof(TimeOnly).GetRuntimeMethod(
+        nameof(TimeOnly.AddHours), [typeof(double)])!;
+
+    private static readonly MethodInfo AddMinutesMethod = typeof(TimeOnly).GetRuntimeMethod(
+        nameof(TimeOnly.AddMinutes), [typeof(double)])!;
+
+    private static readonly MethodInfo IsBetweenMethod = typeof(TimeOnly).GetRuntimeMethod(
+        nameof(TimeOnly.IsBetween), [typeof(TimeOnly), typeof(TimeOnly)])!;
+
+    private static readonly MethodInfo FromDateTime = typeof(TimeOnly).GetRuntimeMethod(
+        nameof(TimeOnly.FromDateTime), [typeof(DateTime)])!;
+
+    private static readonly MethodInfo FromTimeSpan = typeof(TimeOnly).GetRuntimeMethod(
+        nameof(TimeOnly.FromTimeSpan), [typeof(TimeSpan)])!;
 
     private readonly ISqlExpressionFactory _sqlExpressionFactory;
-    private readonly IRelationalTypeMappingSource _typeMappingSource;
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
@@ -31,12 +38,9 @@ public class SqlServerTimeOnlyMethodTranslator : IMethodCallTranslator
     ///     any release. You should only use it directly in your code with extreme caution and knowing that
     ///     doing so can result in application failures when updating to a new Entity Framework Core release.
     /// </summary>
-    public SqlServerTimeOnlyMethodTranslator(
-        ISqlExpressionFactory sqlExpressionFactory,
-        IRelationalTypeMappingSource typeMappingSource)
+    public SqlServerTimeOnlyMethodTranslator(ISqlExpressionFactory sqlExpressionFactory)
     {
         _sqlExpressionFactory = sqlExpressionFactory;
-        _typeMappingSource = typeMappingSource;
     }
 
     /// <summary>
@@ -51,23 +55,34 @@ public class SqlServerTimeOnlyMethodTranslator : IMethodCallTranslator
         IReadOnlyList<SqlExpression> arguments,
         IDiagnosticsLogger<DbLoggerCategory.Query> logger)
     {
-        if (_methodInfoDatePartMapping.TryGetValue(method, out var datePart)
-            && instance != null)
+        if (method.DeclaringType != typeof(TimeOnly))
         {
-            // DateAdd does not accept number argument outside of int range
-            if (arguments[0] is SqlConstantExpression sqlConstant
-                && sqlConstant.Value is double doubleValue
-                && (doubleValue >= int.MaxValue
-                    || doubleValue <= int.MinValue))
+            return null;
+        }
+
+        if ((method == FromDateTime || method == FromTimeSpan)
+            && instance is null
+            && arguments.Count == 1)
+        {
+            return _sqlExpressionFactory.Convert(arguments[0], typeof(TimeOnly));
+        }
+
+        if (instance is null)
+        {
+            return null;
+        }
+
+        if (method == AddHoursMethod || method == AddMinutesMethod)
+        {
+            var datePart = method == AddHoursMethod ? "hour" : "minute";
+
+            // Some Add methods accept a double, and SQL Server DateAdd does not accept number argument outside of int range
+            if (arguments[0] is SqlConstantExpression { Value: double and (<= int.MinValue or >= int.MaxValue) })
             {
                 return null;
             }
 
-
-            if (instance is SqlConstantExpression instanceConstant)
-            {
-                instance = instanceConstant.ApplyTypeMapping(_typeMappingSource.FindMapping(typeof(TimeOnly), "time"));
-            }
+            instance = _sqlExpressionFactory.ApplyDefaultTypeMapping(instance);
 
             return _sqlExpressionFactory.Function(
                 "DATEADD",
@@ -76,6 +91,23 @@ public class SqlServerTimeOnlyMethodTranslator : IMethodCallTranslator
                 argumentsPropagateNullability: new[] { false, true, true },
                 instance.Type,
                 instance.TypeMapping);
+        }
+
+        // Translate TimeOnly.IsBetween to a >= b AND a < c.
+        // Since a is evaluated multiple times, only translate for simple constructs (i.e. avoid duplicating complex subqueries).
+        if (method == IsBetweenMethod
+            && instance is ColumnExpression or SqlConstantExpression or SqlParameterExpression)
+        {
+            var typeMapping = ExpressionExtensions.InferTypeMapping(instance, arguments[0], arguments[1]);
+            instance = _sqlExpressionFactory.ApplyTypeMapping(instance, typeMapping);
+
+            return _sqlExpressionFactory.And(
+                _sqlExpressionFactory.GreaterThanOrEqual(
+                    instance,
+                    _sqlExpressionFactory.ApplyTypeMapping(arguments[0], typeMapping)),
+                _sqlExpressionFactory.LessThan(
+                    instance,
+                    _sqlExpressionFactory.ApplyTypeMapping(arguments[1], typeMapping)));
         }
 
         return null;
