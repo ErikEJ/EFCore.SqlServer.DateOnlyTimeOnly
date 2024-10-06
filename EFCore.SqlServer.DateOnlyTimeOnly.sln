@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.SqlServer.DateOnlyTi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.SqlServer.DateOnlyTimeOnly.Test", "EFCore.SqlServer.DateOnlyTimeOnly.Test\EFCore.SqlServer.DateOnlyTimeOnly.Test.csproj", "{2384775D-EAC4-4310-9174-3288847A234F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.7.SqlServerDateOnlyTimeOnly", "EFCore.7.SqlServer.DateTimeOnly\EFCore.7.SqlServerDateOnlyTimeOnly.csproj", "{0A614054-1170-471A-9D76-AF497EA4EEA3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{2384775D-EAC4-4310-9174-3288847A234F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2384775D-EAC4-4310-9174-3288847A234F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2384775D-EAC4-4310-9174-3288847A234F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A614054-1170-471A-9D76-AF497EA4EEA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A614054-1170-471A-9D76-AF497EA4EEA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A614054-1170-471A-9D76-AF497EA4EEA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A614054-1170-471A-9D76-AF497EA4EEA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

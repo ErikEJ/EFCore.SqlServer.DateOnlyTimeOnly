@@ -6,13 +6,12 @@
 	<RootNamespace>Microsoft.EntityFrameworkCore.SqlServer</RootNamespace>
 	<Description>Adds DateOnly and TimeOnly support to the SQL Server EF Core 6 provider</Description>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-	<PackageReleaseNotes>Update to M.D.S. 5.2.1</PackageReleaseNotes>
-	<Version>6.0.10</Version>
+	<PackageReleaseNotes>Update to M.D.S. 5.2.2</PackageReleaseNotes>
+	<Version>6.0.11</Version>
 	<PackageId>ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly</PackageId>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <SignAssembly>True</SignAssembly>
-	<Nullable>enable</Nullable>  
+	<Nullable>enable</Nullable>
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
